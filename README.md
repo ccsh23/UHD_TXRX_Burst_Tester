@@ -7,7 +7,9 @@ boost
 uhd
 
 compilation flags:
+
 -D__GXX_EXPETIMENTAL_CXX0X__
+
 -std=c++0x
 
 Program can be compiled as follows:
