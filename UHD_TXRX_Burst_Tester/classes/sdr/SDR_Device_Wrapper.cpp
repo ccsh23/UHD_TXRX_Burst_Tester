@@ -9,7 +9,7 @@
 using namespace std;
 using namespace utils;
 
-namespace sdr_device
+namespace sdr
 {
 	SDR_Device_Wrapper::SDR_Device_Wrapper(SDR_Device_Config::sptr_t device_cfg)
 	{
