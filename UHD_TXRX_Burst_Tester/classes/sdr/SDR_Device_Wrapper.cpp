@@ -236,40 +236,26 @@ namespace sdr
 						msg("sdr: RX stream has been successfully set up!");
 				}
 
-				//no "activation" call present in UHD, so...
-				/*
-				if (device_cfg->tx_active)
-				{
-					//activate TX stream
-					if (device_cfg->debug_settings)
-						msg("sdr: Trying to activate TX stream...");
+				//no "activation" calls present in UHD
 
-					if (device_cfg->debug_settings)
-						msg("sdr: TX stream has been successfully activated!");
-				}
+				int mtu_tx = tx_stream->get_max_num_samps();
+				int mtu_rx = rx_stream->get_max_num_samps();
 
-				if (device_cfg->rx_active)
-				{
-					//activate RX stream
-					if (device_cfg->debug_settings)
-						msg("sdr: Trying to activate RX stream...");
-
-					//no "activation" call present in UHD, so...
-
-					if (device_cfg->debug_settings)
-						msg("sdr: RX stream has been successfully activated!");
-				}
-				*/
+				msg("sdr: mtu_tx=" + to_string(mtu_tx) + " [Sa], mtu_rx=" + to_string(mtu_rx) + " [Sa]");
 
 				init_successfull = true;
+
+				sleep(1);
 			}
 			catch (const std::exception& e)
 			{
 				msg("sdr: Following exception occurred during initialization of the SDR device: " + string(e.what()), ERROR);
+				sleep(1);
 			}
 			catch (...)
 			{
 				msg("sdr: Unexpected exception was caught during initialization of the SDR device", ERROR);
+				sleep(1);
 			}
 
 			signal_handler.get_io_service().poll();

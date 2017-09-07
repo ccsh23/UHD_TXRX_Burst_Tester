@@ -1,7 +1,7 @@
 /*
- * UHD_TXTX_Burst_Tester v1.01
+ * UHD_TXTX_Burst_Tester v1.02
  *
- *  Created on: 2017-09-06
+ *  Created on: 2017-09-07
  *      Author: ccsh
  *
  * Changelog:
@@ -12,6 +12,11 @@
  *			Default values of SDR_Config has been updated to these used by LimeSDR
  *			Changed namespace 'sdr_device' to 'sdr'
  *			Changed last sleep command to usleep in order to support timeouts < 1 s
+ * v1.02 (2017-09-07)
+ *			Updated LimeSDR device args in *cfg in order to support it also when USRP B200 mini is connected at the same time
+ *			TX and RX streams MTU is now displayed
+ *			Updated configuration so only 100 samples are about to be transmitted or received
+ *			Other minor fixes
  */
 #include <iostream>
 #include <stdio.h>
@@ -205,9 +210,6 @@ int main(int argc, char *argv[])
 
 	vector<complex<float>> tx_buffer(no_of_tx_samples, complex<float>(1.0f, 0.0f));
 	vector<complex<float>> rx_buffer(no_of_rx_samples);
-
-	//reset hardware timer
-	sdr_device_wrapper->get_device()->set_time_now(uhd::time_spec_t(0.0f),0);
 
 	int64_t now_tick = sdr_device_wrapper->get_device()->get_time_now().to_ticks(device_cfg->f_clk);
 
