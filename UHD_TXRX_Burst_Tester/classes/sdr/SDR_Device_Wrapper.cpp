@@ -245,7 +245,10 @@ namespace sdr
 
 				init_successfull = true;
 
-				sleep(1);
+				//reset hardware time
+				device->set_time_now(uhd::time_spec_t(0.0f),0);
+
+				usleep((int)(1e6*device_cfg->T_timeout));
 			}
 			catch (const std::exception& e)
 			{
@@ -272,12 +275,14 @@ namespace sdr
 	{
 		bool res = false;
 
-		std::vector<std::complex<float>> buf(1, {0, 0});
-
+		//this is just a little tweak for a case where we actually do not want any samples to be transmitted
+		//but still would like this call to block (i.e. wait for a given tick on a device)
+		//to achieve that we are going to request transmission of a single zero sample at given tick
+		std::vector<std::complex<float>> empty_buf(1, {0, 0});
 		if (no_of_requested_samples <= 0)
 		{
-			samples = &buf[0];
-			no_of_requested_samples = buf.size();
+			samples = &empty_buf[0];
+			no_of_requested_samples = empty_buf.size();
 		}
 
 		string tx_verbose_msg = "[TX] ";
